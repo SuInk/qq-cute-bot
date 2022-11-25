@@ -15,11 +15,15 @@ class AcceptMes(Resource):
 
     def post(self):
         # 这里对消息进行分发，暂时先设置一个简单的分发
-        _ = request.json
-        if _.get("message_type") == "private":  # 说明有好友发送信息过来
-            uid = _["sender"]["user_id"]  # 获取发信息的好友qq号
-            message = _["raw_message"]  # 获取发送过来的消息
-            asyncio.run(cutebot.handle_private(uid, message))
+        msg = request.json
+        if msg.get("message_type") == "private":  # 说明有好友发送信息过来
+            uid = msg["sender"]["user_id"]  # 获取发信息的好友qq号
+            message = msg["raw_message"]  # 获取发送过来的消息
+            cutebot.handle_private(uid, message)
+        elif msg.get("message_type") == "group": # 说明有群消息发送过来
+            group_id = msg["group_id"] # 获取发信息的群号
+            message = msg["raw_message"]  # 获取发送过来的消息
+            cutebot.handle_group(group_id, message)
 
 
 api.add_resource(AcceptMes, "/", endpoint="index")
