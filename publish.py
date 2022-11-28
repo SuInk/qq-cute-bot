@@ -36,6 +36,4 @@ async def door_open():
     on_mqtt_connect()
     # 自定义Topic消息上行
     on_publish("/hz15AEyKUdF/phone/user/esp32c3/gate/open", "{\"id\":\"1\"}", 1)
-    on_subscribe()
-    while True:
-        pass
+
